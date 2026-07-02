@@ -19,7 +19,7 @@
                     <div>
                         <h2 class="eyebrow text-pine-100">Kota</h2>
                         <p class="mt-1 flex items-center gap-1.5 font-display text-2xl font-semibold">
-                            <x-icon name="map-pin" size="20" class="text-gold-400" /> {{ $settings->city }}
+                            <x-icon name="map-pin" size="20" class="text-gold-400" /> {{ $group->city }}
                         </p>
                         @if ($prayer && $prayer['hijri'])
                             <p class="mt-1 text-sm text-pine-100">{{ now()->translatedFormat('l, j F Y') }} · {{ $prayer['hijri'] }}</p>
@@ -40,8 +40,8 @@
                             <form method="POST" action="{{ route('sholat.city') }}">
                                 @csrf
                                 <input type="hidden" name="city" value="{{ $c }}">
-                                <button class="flex w-full items-center justify-center gap-1 rounded-lg py-2 text-sm font-semibold transition {{ $settings->city === $c ? 'bg-pine-500 text-white' : 'bg-base text-ink-soft' }}">
-                                    @if ($settings->city === $c)
+                                <button class="flex w-full items-center justify-center gap-1 rounded-lg py-2 text-sm font-semibold transition {{ $group->city === $c ? 'bg-pine-500 text-white' : 'bg-base text-ink-soft' }}">
+                                    @if ($group->city === $c)
                                         <x-icon name="check" size="13" />
                                     @endif
                                     {{ $c }}
@@ -81,3 +81,4 @@
         </div>
     </div>
 </x-layout>
+

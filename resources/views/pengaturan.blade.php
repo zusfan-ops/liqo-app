@@ -3,24 +3,28 @@
 
     <div class="space-y-5 px-5 py-5">
         @can('manage-settings')
+            <div class="card flex items-center justify-between p-4">
+                <div>
+                    <h2 class="eyebrow">Kode Undangan Grup</h2>
+                    <p class="mt-1 font-display text-2xl font-bold tracking-[0.25em] text-pine-600">{{ $group->code }}</p>
+                </div>
+                <a href="{{ route('anggota.index') }}" class="text-xs font-semibold text-pine-500">Undang anggota</a>
+            </div>
+
             <section class="card p-5">
                 <h2 class="eyebrow mb-4">Profil Majelis</h2>
                 <form method="POST" action="{{ route('pengaturan.update') }}" class="space-y-4">
                     @csrf @method('PUT')
                     <div>
                         <label class="label">Nama Majelis</label>
-                        <input class="field" name="group_name" value="{{ old('group_name', $settings->group_name) }}" required>
-                    </div>
-                    <div>
-                        <label class="label">Koordinator</label>
-                        <input class="field" name="coordinator" value="{{ old('coordinator', $settings->coordinator) }}" required>
+                        <input class="field" name="name" value="{{ old('name', $group->name) }}" required>
                     </div>
                     <div>
                         <label class="label">Kota (jadwal sholat)</label>
                         <div class="relative">
                             <select class="field appearance-none pr-10" name="city">
                                 @foreach ($cities as $c)
-                                    <option value="{{ $c }}" @selected($settings->city === $c)>{{ $c }}</option>
+                                    <option value="{{ $c }}" @selected($group->city === $c)>{{ $c }}</option>
                                 @endforeach
                             </select>
                             <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint">
@@ -31,7 +35,7 @@
                     <div>
                         <label class="label">Target Tilawah Harian (halaman)</label>
                         <input class="field" type="number" name="tilawah_target" min="1" max="100"
-                               value="{{ old('tilawah_target', $settings->tilawah_target) }}" required>
+                               value="{{ old('tilawah_target', $group->tilawah_target) }}" required>
                     </div>
                     <button class="btn-primary w-full">Simpan Pengaturan</button>
                 </form>
@@ -62,7 +66,7 @@
         </section>
 
         <p class="text-center text-xs text-ink-faint">
-            Data majelis tersimpan terpusat di database MySQL —<br>semua anggota melihat data yang sama.
+            Grup: {{ $group->name }} · Data terpusat di MySQL,<br>semua anggota grup melihat data yang sama.
         </p>
     </div>
 </x-layout>

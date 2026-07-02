@@ -28,6 +28,25 @@
         <x-page-header title="Anggota" subtitle="{{ $members->count() }} anggota majelis" />
 
         <div class="space-y-3 px-5 py-5">
+            @can('manage-members')
+                @php
+                    $inviteText = "Assalamu'alaikum! Yuk gabung grup {$group->name} di aplikasi Ruang Ukhuwah. Daftar di ".route('register').' sebagai Anggota, lalu masukkan kode grup: '.$group->code;
+                @endphp
+                <div class="motif-pine rounded-3xl p-5 text-white shadow-lift">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <h2 class="eyebrow text-pine-100">Kode Undangan Grup</h2>
+                            <p class="mt-1 font-display text-3xl font-bold tracking-[0.25em]">{{ $group->code }}</p>
+                            <p class="mt-1 text-xs text-pine-100">Bagikan kode ini — calon anggota memasukkannya saat mendaftar.</p>
+                        </div>
+                        <a href="https://wa.me/?text={{ urlencode($inviteText) }}" target="_blank" rel="noopener"
+                           class="flex shrink-0 flex-col items-center gap-1 rounded-2xl bg-white/10 px-4 py-3 text-xs font-semibold">
+                            <x-icon name="message-circle" size="22" class="text-gold-400" />
+                            Undang via WA
+                        </a>
+                    </div>
+                </div>
+            @endcan
             @foreach ($members as $u)
                 <div class="card p-4">
                     <div class="flex items-center gap-3">

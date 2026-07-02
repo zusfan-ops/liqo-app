@@ -10,6 +10,24 @@ dengan **login multi-user**, hasil migrasi dari versi Next.js (folder `../liqo`)
 - PWA: manifest + service worker (bisa "Add to Home Screen")
 - Jadwal sholat via API Aladhan (metode Kemenag), di-cache 6 jam di server
 
+## Registrasi & grup (multi-majelis)
+
+Aplikasi mendukung **banyak grup majelis** dalam satu database. Alur pendaftaran (`/daftar`):
+
+- **Koordinator** — mengisi nama majelis baru → grup dibuat otomatis beserta
+  **kode undangan** 6 karakter (mis. `ANNISA`). Kode tampil di halaman Anggota &
+  Pengaturan, lengkap dengan tombol **Undang via WhatsApp**.
+- **Anggota** — bergabung ke grup yang sudah ada dengan **memasukkan kode grup**
+  dari koordinator, atau **memilih nama grup dari daftar**.
+
+Semua data (jadwal, kas, absensi, pengumuman, materi) terisolasi per grup —
+antar majelis tidak bisa saling melihat data. Koordinator juga tetap bisa
+menambahkan akun anggota secara manual dari halaman Anggota.
+
+> Catatan: opsi "pilih dari daftar" memungkinkan siapa pun bergabung tanpa kode.
+> Jika privasi grup penting, minta anggota selalu memakai kode (opsi daftar bisa
+> dihilangkan dengan mudah di `resources/views/auth/register.blade.php`).
+
 ## Fitur & hak akses
 
 | Fitur | Koordinator | Sekretaris | Bendahara | Anggota |
@@ -47,9 +65,8 @@ Kata sandi semua akun: **`ukhuwah123`** — segera ganti lewat menu Pengaturan.
 | nur@ukhuwah.id | Bendahara |
 | fatimah@ / khadijah@ / maryam@ / aisyah@ / zainab@ukhuwah.id | Anggota |
 
-Untuk mulai dari data kosong: `php artisan migrate:fresh`, lalu buat akun Koordinator lewat
-tinker (`php artisan tinker`) →
-`App\Models\User::create(['name'=>'Nama','email'=>'email@anda.id','password'=>'sandi','role'=>'Koordinator'])`.
+Kode grup contoh: **`ANNISA`**. Untuk mulai dari data kosong: `php artisan migrate:fresh`
+(tanpa `--seed`), lalu daftar sebagai Koordinator lewat halaman `/daftar`.
 
 ## Struktur singkat
 

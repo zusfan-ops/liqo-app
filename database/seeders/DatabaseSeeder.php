@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Announcement;
 use App\Models\Attendance;
 use App\Models\FinanceEntry;
+use App\Models\Group;
 use App\Models\Meeting;
 use App\Models\Note;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        Setting::create([
-            'group_name' => "Majelis Ta'lim An-Nisa",
-            'coordinator' => 'Ustadzah Halimah',
+        $group = Group::create([
+            'name' => "Majelis Ta'lim An-Nisa",
+            'code' => 'ANNISA',
             'city' => 'Bandung',
             'country' => 'Indonesia',
             'tilawah_target' => 4,
@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             ['Ibu Zainab', 'zainab@ukhuwah.id', 'Anggota', '081234500008', 'Jl. Teratai No. 6', -60],
         ];
         $users = collect($members)->map(fn ($m) => User::create([
+            'group_id' => $group->id,
             'name' => $m[0],
             'email' => $m[1],
             'password' => $password,
@@ -51,6 +52,7 @@ class DatabaseSeeder extends Seeder
             ['Kajian Fikih Wanita', -4, 'Rumah Ibu Nur Hasanah', 'Ibu Nur Hasanah', 'Thaharah: bersuci & hal-hal yang membatalkan wudhu', null],
             ['Liqo Pekanan', -11, 'Rumah Ibu Siti Aminah', 'Ibu Siti Aminah', 'Sirah Nabawiyah: keteladanan Ummahatul Mukminin', null],
         ])->map(fn ($m) => Meeting::create([
+            'group_id' => $group->id,
             'title' => $m[0],
             'date' => today()->addDays($m[1]),
             'time' => '09:00',
@@ -84,6 +86,7 @@ class DatabaseSeeder extends Seeder
             [-2, 'keluar', 'Perlengkapan', 85000, 'Spidol & kertas'],
         ] as $f) {
             FinanceEntry::create([
+                'group_id' => $group->id,
                 'date' => today()->addDays($f[0]),
                 'type' => $f[1],
                 'category' => $f[2],
@@ -94,12 +97,14 @@ class DatabaseSeeder extends Seeder
         }
 
         Announcement::create([
+            'group_id' => $group->id,
             'title' => 'Perubahan Lokasi Kajian Pekan Ini',
             'body' => "Assalamu'alaikum ibu-ibu. Kajian pekan ini insyaAllah diadakan di rumah Ibu Fatimah, Jl. Anggrek No. 8. Mohon hadir tepat waktu pukul 09.00. Jazakunnallahu khairan.",
             'pinned' => true,
             'user_id' => $users[0]->id,
         ]);
         Announcement::create([
+            'group_id' => $group->id,
             'title' => 'Program Tahfizh Juz 30',
             'body' => 'Mulai bulan ini kita membuka program setoran hafalan Juz 30 setiap pekan. Yang berkenan ikut mohon mendaftar ke Ibu Siti Aminah.',
             'pinned' => false,
@@ -107,12 +112,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Note::create([
+            'group_id' => $group->id,
             'date' => today()->subDays(4),
             'title' => 'Ringkasan: Thaharah (Bersuci)',
             'speaker' => 'Ustadzah Halimah',
             'content' => "Thaharah adalah syarat sah ibadah. Poin penting:\n\n1. Air suci mensucikan: air hujan, mata air, sumur, sungai, laut.\n2. Rukun wudhu: niat, membasuh wajah, tangan sampai siku, mengusap kepala, membasuh kaki sampai mata kaki, tertib.\n3. Pembatal wudhu: keluar sesuatu dari dua jalan, hilang akal, menyentuh kemaluan tanpa penghalang.\n\nHikmah: kebersihan sebagian dari iman, dan menjaga kesucian mendekatkan diri kepada Allah.",
         ]);
         Note::create([
+            'group_id' => $group->id,
             'date' => today()->subDays(11),
             'title' => 'Keteladanan Khadijah binti Khuwailid',
             'speaker' => 'Ustadzah Halimah',
