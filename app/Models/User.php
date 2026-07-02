@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['group_id', 'name', 'email', 'password', 'role', 'phone', 'address', 'join_date'])]
+#[Fillable(['group_id', 'name', 'email', 'password', 'role', 'status', 'phone', 'address', 'join_date'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -46,6 +46,16 @@ class User extends Authenticatable
     public function isKoordinator(): bool
     {
         return $this->role === 'Koordinator';
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
     }
 
     public function initials(): string

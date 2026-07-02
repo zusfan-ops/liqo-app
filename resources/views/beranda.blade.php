@@ -35,6 +35,20 @@
     </header>
 
     <div class="space-y-6 px-5 py-6">
+        @if ($pendingCount > 0)
+            <a href="{{ route('anggota.index') }}"
+               class="card flex items-center gap-3 border-gold-400/50 bg-gold-400/[0.08] p-4 animate-fade-up">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-400/20 text-gold-600">
+                    <x-icon name="user-plus" size="20" />
+                </span>
+                <div class="min-w-0 flex-1">
+                    <p class="font-semibold text-ink">{{ $pendingCount }} permintaan bergabung</p>
+                    <p class="text-xs text-ink-soft">Ketuk untuk menyetujui atau menolak.</p>
+                </div>
+                <x-icon name="chevron-right" size="18" class="text-gold-600" />
+            </a>
+        @endif
+
         {{-- Next activity --}}
         <section class="animate-fade-up">
             <div class="mb-2 flex items-center justify-between">

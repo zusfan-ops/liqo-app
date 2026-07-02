@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\FinanceEntry;
 use App\Models\Meeting;
+use App\Models\User;
 use App\Services\PrayerTimes;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -25,6 +27,9 @@ class DashboardController extends Controller
                 ->orderByDesc('pinned')->latest()->first(),
             'prayer' => $prayer,
             'nextPrayer' => $prayer ? PrayerTimes::next($prayer['timings']) : null,
+            'pendingCount' => Gate::allows('manage-members')
+                ? User::where('group_id', $group->id)->where('status', 'pending')->count()
+                : 0,
         ]);
     }
 }

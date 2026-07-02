@@ -22,7 +22,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::view('/menunggu', 'auth.pending')->name('menunggu');
+});
 
+Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('beranda');
 
     Route::get('/jadwal', [MeetingController::class, 'index'])->name('jadwal.index');
@@ -35,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/anggota', [MemberController::class, 'index'])->name('anggota.index');
     Route::post('/anggota', [MemberController::class, 'store'])->name('anggota.store');
+    Route::post('/anggota/{member}/setujui', [MemberController::class, 'approve'])->name('anggota.approve');
+    Route::delete('/anggota/{member}/tolak', [MemberController::class, 'reject'])->name('anggota.reject');
     Route::put('/anggota/{member}', [MemberController::class, 'update'])->name('anggota.update');
     Route::delete('/anggota/{member}', [MemberController::class, 'destroy'])->name('anggota.destroy');
 

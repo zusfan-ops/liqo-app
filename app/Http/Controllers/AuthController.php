@@ -71,20 +71,25 @@ class AuthController extends Controller
                     'city' => $data['city'] ?? 'Bandung',
                 ]);
                 $role = 'Koordinator';
+                $status = 'active';
             } else {
                 $group = null;
+                $role = 'Anggota';
                 if (($data['join_by'] ?? null) === 'code') {
                     $group = Group::where('code', strtoupper(trim($data['group_code'] ?? '')))->first();
                     if (! $group) {
                         throw ValidationException::withMessages(['group_code' => 'Kode grup tidak ditemukan. Periksa kembali kode dari koordinator Anda.']);
                     }
-                } elseif (! empty($data['group_id'])) {
-                    $group = Group::find($data['group_id']);
+                    $status = 'active'; // punya kode = sudah diundang
+                } else {
+                    if (! empty($data['group_id'])) {
+                        $group = Group::find($data['group_id']);
+                    }
+                    if (! $group) {
+                        throw ValidationException::withMessages(['group_id' => 'Pilih grup majelis atau masukkan kode grup.']);
+                    }
+                    $status = 'pending'; // tanpa kode = tunggu persetujuan koordinator
                 }
-                if (! $group) {
-                    throw ValidationException::withMessages(['group_id' => 'Pilih grup majelis atau masukkan kode grup.']);
-                }
-                $role = 'Anggota';
             }
 
             return User::create([
@@ -93,6 +98,7 @@ class AuthController extends Controller
                 'email' => $data['email'],
                 'password' => $data['password'],
                 'role' => $role,
+                'status' => $status,
                 'phone' => $data['phone'] ?? null,
                 'join_date' => today(),
             ]);
@@ -100,6 +106,10 @@ class AuthController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+
+        if (! $user->isActive()) {
+            return redirect()->route('menunggu');
+        }
 
         return redirect()->route('beranda')->with('ok',
             $user->isKoordinator()

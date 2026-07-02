@@ -95,6 +95,7 @@
 
                     <div x-show="joinBy === 'list'" x-cloak>
                         <label class="label">Pilih Grup Majelis</label>
+                        <p class="mb-2 text-xs text-ink-faint">Tanpa kode, keanggotaan Anda menunggu persetujuan koordinator terlebih dahulu.</p>
                         @if ($groups->isEmpty())
                             <p class="text-sm text-ink-soft">Belum ada grup terdaftar. Minta kode dari koordinator, atau daftar sebagai Koordinator untuk membuat grup baru.</p>
                         @else

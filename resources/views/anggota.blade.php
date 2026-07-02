@@ -46,6 +46,38 @@
                         </a>
                     </div>
                 </div>
+
+                @if ($pending->isNotEmpty())
+                    <section class="card border-gold-400/50 bg-gold-400/[0.06] p-4">
+                        <h2 class="eyebrow text-gold-600">Menunggu Persetujuan ({{ $pending->count() }})</h2>
+                        <div class="mt-3 space-y-3">
+                            @foreach ($pending as $p)
+                                <div class="flex items-center gap-3 rounded-xl bg-surface p-3 shadow-soft">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-400/15 font-bold text-gold-600">
+                                        {{ $p->initials() }}
+                                    </span>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="truncate font-semibold text-ink">{{ $p->name }}</p>
+                                        <p class="truncate text-xs text-ink-faint">{{ $p->email }}@if ($p->phone) · {{ $p->phone }}@endif</p>
+                                    </div>
+                                    <form method="POST" action="{{ route('anggota.approve', $p) }}">
+                                        @csrf
+                                        <button class="flex h-9 w-9 items-center justify-center rounded-xl bg-pine-500 text-white" title="Setujui">
+                                            <x-icon name="check" size="16" />
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ route('anggota.reject', $p) }}"
+                                          onsubmit="return confirm('Tolak permintaan {{ $p->name }}? Akunnya akan dihapus.')">
+                                        @csrf @method('DELETE')
+                                        <button class="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-100 text-rose-500" title="Tolak">
+                                            <x-icon name="x" size="16" />
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
             @endcan
             @foreach ($members as $u)
                 <div class="card p-4">

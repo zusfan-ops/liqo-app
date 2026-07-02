@@ -29,6 +29,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['Koordinator', 'Sekretaris', 'Bendahara', 'Anggota'])->default('Anggota');
+            $table->enum('status', ['pending', 'active'])->default('active');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->date('join_date')->nullable();

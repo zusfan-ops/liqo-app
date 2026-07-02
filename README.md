@@ -18,15 +18,17 @@ Aplikasi mendukung **banyak grup majelis** dalam satu database. Alur pendaftaran
   **kode undangan** 6 karakter (mis. `ANNISA`). Kode tampil di halaman Anggota &
   Pengaturan, lengkap dengan tombol **Undang via WhatsApp**.
 - **Anggota** — bergabung ke grup yang sudah ada dengan **memasukkan kode grup**
-  dari koordinator, atau **memilih nama grup dari daftar**.
+  dari koordinator (langsung aktif, karena kode = undangan), atau **memilih nama
+  grup dari daftar** (berstatus *menunggu persetujuan*).
+
+**Mekanisme persetujuan:** anggota yang mendaftar tanpa kode tidak bisa melihat
+data apa pun — ia hanya melihat halaman "Menunggu Persetujuan" sampai koordinator
+menyetujuinya. Koordinator mendapat notifikasi di beranda dan tombol
+**Setujui / Tolak** di halaman Anggota (tolak = akun dihapus).
 
 Semua data (jadwal, kas, absensi, pengumuman, materi) terisolasi per grup —
 antar majelis tidak bisa saling melihat data. Koordinator juga tetap bisa
 menambahkan akun anggota secara manual dari halaman Anggota.
-
-> Catatan: opsi "pilih dari daftar" memungkinkan siapa pun bergabung tanpa kode.
-> Jika privasi grup penting, minta anggota selalu memakai kode (opsi daftar bisa
-> dihilangkan dengan mudah di `resources/views/auth/register.blade.php`).
 
 ## Fitur & hak akses
 

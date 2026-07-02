@@ -28,7 +28,7 @@ class AttendanceController extends Controller
         return view('absensi', [
             'meetings' => $meetings,
             'meeting' => $meeting,
-            'members' => User::where('group_id', $groupId)->orderBy('name')->get(),
+            'members' => User::where('group_id', $groupId)->active()->orderBy('name')->get(),
             'records' => $records,
         ]);
     }

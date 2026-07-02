@@ -13,13 +13,37 @@ class MemberController extends Controller
 {
     public function index(Request $request): View
     {
+        $scoped = User::where('group_id', $request->user()->group_id);
+
         return view('anggota', [
             'group' => $request->user()->group,
-            'members' => User::where('group_id', $request->user()->group_id)
+            'members' => (clone $scoped)->active()
                 ->orderByRaw("FIELD(role, 'Koordinator', 'Sekretaris', 'Bendahara', 'Anggota')")
                 ->orderBy('name')
                 ->get(),
+            'pending' => (clone $scoped)->where('status', 'pending')->orderBy('created_at')->get(),
         ]);
+    }
+
+    public function approve(Request $request, User $member): RedirectResponse
+    {
+        Gate::authorize('manage-members');
+        abort_unless($member->group_id === $request->user()->group_id, 404);
+
+        $member->update(['status' => 'active']);
+
+        return redirect()->route('anggota.index')->with('ok', $member->name.' disetujui menjadi anggota.');
+    }
+
+    public function reject(Request $request, User $member): RedirectResponse
+    {
+        Gate::authorize('manage-members');
+        abort_unless($member->group_id === $request->user()->group_id, 404);
+        abort_unless($member->status === 'pending', 400);
+
+        $member->delete();
+
+        return redirect()->route('anggota.index')->with('ok', 'Permintaan bergabung ditolak.');
     }
 
     public function store(Request $request): RedirectResponse
