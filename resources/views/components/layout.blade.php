@@ -17,6 +17,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-base font-sans text-ink antialiased">
+    <x-splash />
+    <x-install-prompt />
     <div class="relative mx-auto min-h-dvh w-full max-w-md {{ $nav ? 'pb-24' : '' }}">
         @if (session('ok'))
             <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 2600)" x-show="show" x-cloak
