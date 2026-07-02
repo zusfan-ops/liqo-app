@@ -1,0 +1,133 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-display: 'Lora', Georgia, serif;
+    --font-arabic: 'Amiri', 'Scheherazade New', serif;
+
+    /* Warm ivory paper base */
+    --color-base: #faf6ef;
+    --color-surface: #ffffff;
+
+    /* Deep emerald — the brand's dignified Islamic green */
+    --color-pine-50: #eaf3ef;
+    --color-pine-100: #cfe4db;
+    --color-pine-200: #a5cdbe;
+    --color-pine-300: #6fb29b;
+    --color-pine-400: #3e9179;
+    --color-pine-500: #1c6b54;
+    --color-pine-600: #155543;
+    --color-pine-700: #114536;
+    --color-pine-800: #0d362a;
+    --color-pine-900: #0a2a21;
+
+    /* Dusty rose — feminine warmth from batik & prayer garments */
+    --color-rose-100: #f6e6e9;
+    --color-rose-200: #ebc7ce;
+    --color-rose-300: #dba0ab;
+    --color-rose-400: #c97b84;
+    --color-rose-500: #b24c63;
+    --color-rose-600: #963c51;
+
+    --color-gold-400: #d8b45a;
+    --color-gold-500: #c89b3c;
+    --color-gold-600: #a87e2c;
+
+    --color-ink: #2b2926;
+    --color-ink-soft: #5b564e;
+    --color-ink-faint: #8c867b;
+
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-3xl: 2rem;
+
+    --shadow-soft: 0 2px 16px -4px rgba(17, 69, 54, 0.1);
+    --shadow-card: 0 4px 24px -8px rgba(17, 69, 54, 0.14);
+    --shadow-lift: 0 8px 32px -8px rgba(17, 69, 54, 0.2);
+
+    --animate-fade-up: fade-up 0.4s ease-out both;
+
+    @keyframes fade-up {
+        0% {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+:root {
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #faf6ef;
+    color: #2b2926;
+    overscroll-behavior-y: none;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Subtle Islamic girih-inspired texture for headers */
+.motif-pine {
+    background-color: #114536;
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(216, 180, 90, 0.12) 0, transparent 40%),
+        radial-gradient(circle at 85% 0%, rgba(201, 123, 132, 0.14) 0, transparent 45%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='1'%3E%3Cpath d='M30 2 L58 30 L30 58 L2 30 Z'/%3E%3Cpath d='M30 14 L46 30 L30 46 L14 30 Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@layer components {
+    .card {
+        @apply rounded-2xl bg-surface shadow-soft border border-pine-100/60;
+    }
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-pine-500 px-5 py-3 font-semibold text-white shadow-soft transition active:scale-[0.98] hover:bg-pine-600 disabled:opacity-50;
+    }
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-pine-200 bg-white px-5 py-3 font-semibold text-pine-600 transition active:scale-[0.98] hover:bg-pine-50;
+    }
+    .btn-rose {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-rose-500 px-5 py-3 font-semibold text-white shadow-soft transition active:scale-[0.98] hover:bg-rose-600;
+    }
+    .field {
+        @apply w-full rounded-xl border border-pine-200 bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-faint focus:border-pine-400 focus:ring-2 focus:ring-pine-200;
+    }
+    .label {
+        @apply mb-1.5 block text-sm font-semibold text-ink-soft;
+    }
+    .chip {
+        @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold;
+    }
+    .eyebrow {
+        @apply text-[0.7rem] font-bold uppercase tracking-[0.18em] text-pine-400;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* Hide scrollbars on horizontal scrollers but keep function */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
